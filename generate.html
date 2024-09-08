@@ -1,0 +1,107 @@
+<html><head><base href="https://serp-keyword-extractor.com/"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI SERP Keyword Extractor</title><style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+    h1 {
+        color: #2c3e50;
+        text-align: center;
+    }
+    textarea, #output {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    button {
+        display: block;
+        width: 200px;
+        margin: 20px auto;
+        padding: 10px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #2980b9;
+    }
+    #output {
+        background-color: white;
+        min-height: 200px;
+        white-space: pre-wrap;
+    }
+    .loading {
+        text-align: center;
+        font-style: italic;
+        color: #7f8c8d;
+    }
+</style></head><body>
+    <h1>AI SERP Keyword Extractor</h1>
+    <form id="keywordForm" method="GET" action="https://serp-keyword-extractor.com/extract">
+        <textarea id="inputText" name="text" rows="10" placeholder="Paste your text here (up to 100,000 words)..."></textarea>
+        <button type="submit">Extract Keywords</button>
+    </form>
+    <div id="output"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+    <script>
+        const form = document.getElementById('keywordForm');
+        const output = document.getElementById('output');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = document.getElementById('inputText').value;
+            
+            output.innerHTML = '<p class="loading">Extracting keywords... This may take a moment.</p>';
+            
+            try {
+                const keywords = await extractKeywords(text);
+                displayKeywords(keywords);
+            } catch (error) {
+                output.textContent = 'An error occurred while extracting keywords. Please try again.';
+            }
+        });
+
+        async function extractKeywords(text) {
+            // Simulating API call or complex processing
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            const words = text.toLowerCase().match(/\b[\w']+\b/g) || [];
+            const ngrams = generateNgrams(words, 2, 3);
+            const filtered = filterKeywords(ngrams);
+            return _.sampleSize(filtered, Math.max(500, filtered.length));
+        }
+
+        function generateNgrams(words, minGram, maxGram) {
+            let ngrams = [];
+            for (let n = minGram; n <= maxGram; n++) {
+                for (let i = 0; i <= words.length - n; i++) {
+                    ngrams.push(words.slice(i, i + n).join(' '));
+                }
+            }
+            return ngrams;
+        }
+
+        function filterKeywords(ngrams) {
+            const stopWords = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with']);
+            return ngrams.filter(ngram => {
+                const words = ngram.split(' ');
+                return words.length === 1 || !words.every(word => stopWords.has(word));
+            });
+        }
+
+        function displayKeywords(keywords) {
+            output.innerHTML = `<strong>Extracted Keywords (${keywords.length}):</strong>\n\n${keywords.join('\n')}`;
+        }
+    </script>
+</body></html>
