@@ -1,0 +1,332 @@
+<html><head><base href="https://serp-keyword-extractor-pro.kawaii/" />
+<title>SERP Keyword Extractor Pro - Kawaii Edition</title>
+<style>
+  body {
+    font-family: 'Comic Sans MS', cursive;
+    background-color: #FFD1DC;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .container {
+    background-color: #FFF0F5;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 1200px;
+    width: 100%;
+  }
+  
+  h1 {
+    color: #FF69B4;
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  #input-area, #output-area {
+    margin-bottom: 20px;
+  }
+  
+  textarea {
+    width: 100%;
+    height: 150px;
+    border: 2px solid #FF69B4;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 16px;
+    resize: vertical;
+  }
+  
+  button {
+    background-color: #FF69B4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 10px 5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+  }
+  
+  button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  #keyword-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  #keyword-list li {
+    background-color: #FFC0CB;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(25% - 10px);
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+  }
+  
+  #keyword-list li:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .keyword-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .keyword-text {
+    margin-right: 10px;
+    font-size: 14px;
+    word-break: break-word;
+  }
+  
+  .keyword-frequency {
+    background-color: #FF69B4;
+    color: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+  }
+  
+  #cute-mascot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  #cute-mascot:hover {
+    transform: scale(1.1);
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  #copy-success {
+    color: #4CAF50;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  #keyword-count {
+    text-align: center;
+    font-size: 18px;
+    color: #FF69B4;
+    margin-bottom: 10px;
+  }
+  
+  #advanced-options {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #FFE4E1;
+    border-radius: 10px;
+  }
+  
+  #advanced-options h3 {
+    color: #FF69B4;
+    margin-bottom: 10px;
+  }
+  
+  .option-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .option-row label {
+    margin-right: 10px;
+  }
+  
+  #min-word-length, #max-keywords {
+    width: 60px;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌈 SERP Keyword Extractor Pro 🦄</h1>
+    <div id="input-area">
+      <textarea id="serp-input" placeholder="Paste your SERP results here..."></textarea>
+    </div>
+    <div id="advanced-options">
+      <h3>Advanced Options</h3>
+      <div class="option-row">
+        <label for="min-word-length">Minimum word length:</label>
+        <input type="number" id="min-word-length" value="3" min="1" max="10">
+      </div>
+      <div class="option-row">
+        <label for="max-keywords">Maximum keywords to display:</label>
+        <input type="number" id="max-keywords" value="1000" min="10" max="10000">
+      </div>
+      <div class="option-row">
+        <label for="include-phrases">Include phrases:</label>
+        <input type="checkbox" id="include-phrases">
+      </div>
+    </div>
+    <div class="button-container">
+      <button id="extract-btn">Extract ALL Keywords ✨</button>
+      <button id="copy-btn" style="display: none;">Copy Keywords 📋</button>
+      <button id="export-csv-btn" style="display: none;">Export to CSV 📊</button>
+    </div>
+    <div id="copy-success">Keywords copied successfully! 🎉</div>
+    <div id="output-area">
+      <h2>Extracted Keywords:</h2>
+      <div id="keyword-count"></div>
+      <ul id="keyword-list"></ul>
+    </div>
+  </div>
+  
+  <svg id="cute-mascot" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="45" fill="#FFC0CB" />
+    <circle cx="35" cy="40" r="5" fill="#000" />
+    <circle cx="65" cy="40" r="5" fill="#000" />
+    <path d="M 40 60 Q 50 70 60 60" stroke="#000" stroke-width="3" fill="none" />
+  </svg>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+  <script>
+    const extractBtn = document.getElementById('extract-btn');
+    const copyBtn = document.getElementById('copy-btn');
+    const exportCsvBtn = document.getElementById('export-csv-btn');
+    const serpInput = document.getElementById('serp-input');
+    const keywordList = document.getElementById('keyword-list');
+    const cuteMascot = document.getElementById('cute-mascot');
+    const copySuccess = document.getElementById('copy-success');
+    const keywordCount = document.getElementById('keyword-count');
+    const minWordLength = document.getElementById('min-word-length');
+    const maxKeywords = document.getElementById('max-keywords');
+    const includePhrases = document.getElementById('include-phrases');
+    
+    let extractedKeywords = [];
+    
+    extractBtn.addEventListener('click', () => {
+      const inputText = serpInput.value;
+      extractedKeywords = extractKeywords(inputText);
+      displayKeywords(extractedKeywords);
+      copyBtn.style.display = 'inline-block';
+      exportCsvBtn.style.display = 'inline-block';
+    });
+    
+    copyBtn.addEventListener('click', () => {
+      const keywordText = extractedKeywords.map(([keyword]) => keyword).join('\n');
+      navigator.clipboard.writeText(keywordText).then(() => {
+        copySuccess.style.opacity = '1';
+        setTimeout(() => {
+          copySuccess.style.opacity = '0';
+        }, 2000);
+      });
+    });
+    
+    exportCsvBtn.addEventListener('click', () => {
+      const csvContent = "data:text/csv;charset=utf-8," 
+        + "Keyword,Frequency\n"
+        + extractedKeywords.map(([keyword, frequency]) => `"${keyword}",${frequency}`).join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "keywords.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+    
+    function extractKeywords(text) {
+      const minLength = parseInt(minWordLength.value);
+      const maxCount = parseInt(maxKeywords.value);
+      const includePhrasesFlag = includePhrases.checked;
+      
+      let words = text.toLowerCase().match(/\b[\w']+\b/g) || [];
+      if (includePhrasesFlag) {
+        words = generateNgrams(words, 2, 3);
+      }
+
+      const filteredWords = words.filter(word => word.length >= minLength && !isStopWord(word));
+      const frequencyMap = _.countBy(filteredWords);
+      return Object.entries(frequencyMap)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, maxCount);
+    }
+
+    function generateNgrams(words, minGram, maxGram) {
+      let ngrams = [];
+      for (let n = minGram; n <= maxGram; n++) {
+        for (let i = 0; i <= words.length - n; i++) {
+          ngrams.push(words.slice(i, i + n).join(' '));
+        }
+      }
+      return ngrams;
+    }
+
+    function isStopWord(word) {
+      const stopWords = new Set(['the', 'and', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are']);
+      return stopWords.has(word);
+    }
+    
+    function displayKeywords(keywords) {
+      keywordList.innerHTML = '';
+      keywordCount.textContent = `Total Keywords: ${keywords.length}`;
+      keywords.forEach(([keyword, frequency]) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span class="keyword-item">
+            <span class="keyword-text">${keyword}</span>
+            <span class="keyword-frequency">${frequency}</span>
+          </span>
+        `;
+        keywordList.appendChild(li);
+      });
+    }
+    
+    cuteMascot.addEventListener('click', () => {
+      cuteMascot.style.animation = 'bounce 0.5s';
+      setTimeout(() => {
+        cuteMascot.style.animation = '';
+      }, 500);
+    });
+  </script>
+</body>
+</html>
